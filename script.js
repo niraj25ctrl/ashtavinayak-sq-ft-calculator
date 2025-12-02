@@ -8,19 +8,19 @@ function addRow() {
     const rowId = `row-${rowCounter}`;
     const tableBody = document.getElementById('calculation-body');
 
-    // HTML template for a new row (Running Total column removed)
+    // Added classes 'desktop-only' to intermediate columns for CSS hiding
     const newRowHTML = `
         <tr id="${rowId}">
             <td data-label="Height (in)"><input type="number" id="heightInches-${rowCounter}" data-row-id="${rowId}" 
                        class="trigger-new-row" oninput="calculateRow('${rowId}')" value=""></td>
             <td data-label="Width (in)"><input type="number" id="widthInches-${rowCounter}" data-row-id="${rowId}" 
                        class="trigger-new-row" oninput="calculateRow('${rowId}')" value=""></td>
-            <td data-label="H (ft)"><output id="heightFeet-${rowCounter}"></output></td>
-            <td data-label="W (ft)"><output id="widthFeet-${rowCounter}"></output></td>
-            <td data-label="H (Rnd)"><output id="heightRounded-${rowCounter}"></output></td>
-            <td data-label="W (Rnd)"><output id="widthRounded-${rowCounter}"></output></td>
-            <td data-label="Square ft" class="square-ft-cell"><output id="squareFeet-${rowCounter}" data-sqft-value="0"></output></td>
-            <td data-label="Delete"><button onclick="deleteRow('${rowId}')" class="delete-btn">🗑️ Delete</button></td>
+            <td data-label="H (ft)" class="desktop-only"><output id="heightFeet-${rowCounter}"></output></td>
+            <td data-label="W (ft)" class="desktop-only"><output id="widthFeet-${rowCounter}"></output></td>
+            <td data-label="H (Rnd)" class="desktop-only"><output id="heightRounded-${rowCounter}"></output></td>
+            <td data-label="W (Rnd)" class="desktop-only"><output id="widthRounded-${rowCounter}"></output></td>
+            <td data-label="SQ FT" class="square-ft-cell"><output id="squareFeet-${rowCounter}" data-sqft-value="0"></output></td>
+            <td data-label=" "><button onclick="deleteRow('${rowId}')" class="delete-btn">🗑️ Delete</button></td>
         </tr>
     `;
 
@@ -100,6 +100,7 @@ function calculateRow(rowId) {
     }
 
     // --- Update Outputs ---
+    // Intermediate outputs are updated even if hidden, to maintain correct data-sqft-value
     updateOutput(`heightFeet-${counter}`, heightFeet > 0 ? heightFeet.toFixed(6) : '');
     updateOutput(`widthFeet-${counter}`, widthFeet > 0 ? widthFeet.toFixed(6) : '');
     updateOutput(`heightRounded-${counter}`, heightFeet > 0 ? heightRounded : '0.00');
@@ -131,7 +132,6 @@ function updateOutput(id, textValue, numericValue) {
 function calculateGrandTotal() {
     let grandTotal = 0;
     
-    // Select all output elements that hold the individual Square Ft value
     const sqFtOutputs = document.querySelectorAll('output[id^="squareFeet-"]');
     
     sqFtOutputs.forEach(output => {
@@ -139,7 +139,6 @@ function calculateGrandTotal() {
         grandTotal += sqft;
     });
 
-    // Update the final total display
     document.getElementById('grandTotalSqFt').textContent = grandTotal.toFixed(2);
 }
 
