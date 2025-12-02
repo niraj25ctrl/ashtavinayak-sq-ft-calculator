@@ -130,8 +130,18 @@ tfoot .total-row {
         display: block;
     }
 
+    /* Hide the intermediate conversion columns in the header and body */
+    .desktop-only,
+    th:nth-child(3), td:nth-child(3), /* H (ft) */
+    th:nth-child(4), td:nth-child(4), /* W (ft) */
+    th:nth-child(5), td:nth-child(5), /* H (Rnd) */
+    th:nth-child(6), td:nth-child(6)  /* W (Rnd) */
+     {
+        display: none !important;
+    }
+
     thead {
-        display: none; /* Hide header on mobile for cleaner stacking */
+        display: none; /* Hide header completely on mobile */
     }
 
     /* Collapse table rows into blocks */
@@ -141,49 +151,68 @@ tfoot .total-row {
         border-radius: 8px;
         padding: 10px;
         background-color: var(--container-bg);
+        display: grid; /* Use grid for cleaner column layout on mobile row */
+        grid-template-columns: 1fr 1fr 1fr; /* 3 columns: H(in), W(in), SqFt */
+        grid-template-rows: auto auto;
+        gap: 10px;
     }
     
-    /* Display cells as key-value pairs using flexbox */
-    td {
+    /* Input columns and SqFt column will span the top row */
+    td:nth-child(1), td:nth-child(2), td:nth-child(7) { /* H(in), W(in), Square ft */
+        grid-row: 1;
         border: none;
-        position: relative;
-        padding-left: 50%;
-        text-align: left;
-        min-height: 35px; /* Ensure space for content */
+        padding: 0;
+        text-align: center;
+    }
+
+    td:nth-child(1) { grid-column: 1; }
+    td:nth-child(2) { grid-column: 2; }
+    td:nth-child(7) { grid-column: 3; }
+    
+    /* Action (Delete) column spans the bottom row */
+    td:nth-child(8) {
+        grid-row: 2;
+        grid-column: 1 / span 3; /* spans all 3 columns */
+        border-top: 1px dashed #ccc;
+        padding-top: 10px;
     }
     
-    /* Use data attributes for labels before content (like a key) */
+    /* Custom mobile labels for inputs and result */
     td:before {
         content: attr(data-label);
-        position: absolute;
-        left: 10px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
+        display: block;
         font-weight: bold;
         color: var(--primary-color);
-        text-align: left;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+    
+    /* Remove padding-left used in previous mobile version */
+    td {
+        padding-left: 0;
     }
 
-    /* Special handling for the total row */
-    .total-row td {
+    /* Total row reverts to flex for clear two-column layout */
+    .total-row {
         display: flex;
+        flex-wrap: nowrap;
         justify-content: space-between;
-        padding: 10px;
-    }
-
-    /* Ensure the final total cell spans correctly */
-    .final-total-cell {
-        flex-grow: 1;
-        text-align: right !important;
-        padding-right: 0 !important;
+        align-items: center;
+        padding: 15px;
+        border: none;
     }
     
     .total-label {
         flex-grow: 1;
         text-align: left !important;
         font-size: 1.2em !important;
-        padding-right: 0 !important;
+        padding-right: 10px !important;
+    }
+
+    .final-total-cell {
+        flex-shrink: 0;
+        text-align: right !important;
+        padding: 0 !important;
     }
 
     #grandTotalSqFt {
