@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shree Ashtavinayak Glass & Profile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Personal Square Footage Calculator 📏</h1>
+        <p>Enter dimensions in inches below. A new line is automatically added when you start typing in the last row.</p>
+    </header>
+
+    <div class="calculator-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="input-col">Height (in)</th>
+                    <th class="input-col">Width (in)</th>
+                    <th class="calc-col">H (ft)</th>
+                    <th class="calc-col">W (ft)</th>
+                    <th class="calc-col">H (Rnd)</th>
+                    <th class="calc-col">W (Rnd)</th>
+                    <th class="result-col">Square ft</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="calculation-body">
+                </tbody>
+            <tfoot>
+                <tr class="total-row">
+                    <td colspan="6" class="total-label">GRAND TOTAL Square Feet:</td>
+                    <td class="final-total-cell" style="font-size: 1.5em; font-weight: bold;"><output id="grandTotalSqFt">0.00</output></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+        
+        <button id="addRowButton" style="display: none;">➕ Add New Line</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
